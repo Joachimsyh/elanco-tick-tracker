@@ -16,29 +16,29 @@ It includes interactive maps, species information, and a form to report sighting
 ## Features Implemented (Core Requirements)
 
 ### 1. Interactive Map Visualisation
-- Dynamic map interface displaying tick sightings across the UK. ✅
+- Dynamic map interface displaying tick sightings across the UK. 
 - Markers with visual indicators for:
   - **Severity:** low=green, medium=yellow, high=red (logically assigned based on location type)  
-  - **Recency:** sightings <7 days → glowing outline; 7–30 days → thin outline; >30 days → no outline ✅
+  - **Recency:** sightings <7 days → glowing outline; 7–30 days → thin outline; >30 days → no outline 
 
 ### 2. Sighting Information
 - Sidebar panel showing detailed sighting information when a user clicks a map marker, including:  
   - Species  
   - Latin name  
   - Severity  
-  - Date and location ✅
-- Quick action buttons: Report a sighting, Get Directions, Share ✅
+  - Date and location 
+- Quick action buttons: Report a sighting, Get Directions, Share 
 
 ### 3. Education Content
 - Species identification guide showing:  
   - Species name  
   - Latin name  
   - Small image/icon  
-  - Prevention tips ✅
+  - Prevention tips 
 
 ### 4. Report a Sighting
-- Form to report a new sighting (date, time, location, species). ✅
-- Form validation with success, warning, and error messages ✅
+- Form to report a new sighting (date, time, location, species). 
+- Form validation with success, warning, and error messages 
 
 > ⚠️ *Other features (e.g., filter controls, timeline view, seasonal charts, image upload) were not implemented in the MVP.*
 
