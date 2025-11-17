@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# Elanco Tick Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Student Name:** Yu Hang Joachim Sin
+**University:** Brunel University of London
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Project Overview
 
-### `npm start`
+This is a Minimum Viable Product (MVP) web application built for the **Elanco 2026 Placement Task**.  
+The application visualizes tick sightings across the UK, helping users identify high-risk areas and contribute to tick reporting.  
+It includes interactive maps, species information, and a form to report sightings, aimed at improving public awareness of tick-borne diseases.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features Implemented (Core Requirements)
 
-### `npm test`
+### 1. Interactive Map Visualisation
+- Dynamic map interface displaying tick sightings across the UK. ✅
+- Markers with visual indicators for:
+  - **Severity:** low=green, medium=yellow, high=red (logically assigned based on location type)  
+  - **Recency:** sightings <7 days → glowing outline; 7–30 days → thin outline; >30 days → no outline ✅
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Sighting Information
+- Sidebar panel showing detailed sighting information when a user clicks a map marker, including:  
+  - Species  
+  - Latin name  
+  - Severity  
+  - Date and location ✅
+- Quick action buttons: Report a sighting, Get Directions, Share ✅
 
-### `npm run build`
+### 3. Education Content
+- Species identification guide showing:  
+  - Species name  
+  - Latin name  
+  - Small image/icon  
+  - Prevention tips ✅
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 4. Report a Sighting
+- Form to report a new sighting (date, time, location, species). ✅
+- Form validation with success, warning, and error messages ✅
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+> ⚠️ *Other features (e.g., filter controls, timeline view, seasonal charts, image upload) were not implemented in the MVP.*
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Technical Stack
+- **Frontend:** React, React Router DOM  
+- **Mapping:** Leaflet.js  
+- **Data:** Provided API (`https://dev-task.elancoapps.com/`) and `tick_data.json`  
+- **Styling:** CSS Modules / standard CSS 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## How to Run the Project
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Clone the repo:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+git clone https://github.com/Joachimsyh/elanco-tick-tracker.git
