@@ -1,0 +1,63 @@
+/* The main sidebar container */
+.sidebar {
+    position: fixed;
+    /* Stays fixed relative to the viewport */
+    top: 0;
+    /* Stick to the top of the page */
+    right: -350px;
+    /* Hide it off-screen to the right initially */
+    width: 350px;
+    /* Set the width of the sidebar */
+    height: 100%;
+    /* Full height of the viewport */
+    background: white;
+    /* White background */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    /* Shadow to make it pop */
+    padding: 20px;
+    /* Inner spacing */
+    transition: right 0.3s ease;
+    /* Smooth slide-in/out effect when 'right' changes */
+    z-index: 1000;
+    /* Ensure it appears above other elements, otherwise it won't be visible */
+}
+
+/* When the sidebar is open, slide it in */
+.sidebar.open {
+    right: 0;
+    /* Move it fully into view */
+}
+
+/* The close button inside the sidebar */
+.close-btn {
+    position: absolute;
+    /* Position relative to sidebar container */
+    top: 10px;
+    /* Slight padding from top */
+    left: 10px;
+    /* Slight padding from left */
+    border: none;
+    /* Remove default button border */
+    background: transparent;
+    /* Transparent background */
+    font-size: 24px;
+    /* Make the '×' bigger */
+    cursor: pointer;
+    /* Change cursor to pointer on hover */
+}
+
+/* Placeholder text when no sighting is selected */
+.placeholder {
+    color: #555;
+    /* Gray color */
+    font-style: italic;
+    /* Italicize the text */
+}
+
+/* Buttons inside the content */
+.content button {
+    margin-right: 5px;
+    /* Space between buttons horizontally */
+    margin-top: 10px;
+    /* Space above each button */
+}
