@@ -57,6 +57,7 @@ It includes interactive maps, species information, and a form to report sighting
 ---
 ## Walkthrough of the video:
 [Walkthrough](https://youtu.be/wOT3WumPDI8)
+Recorded through OBS.
 
 ## How to Run the Project
 
@@ -64,3 +65,7 @@ It includes interactive maps, species information, and a form to report sighting
 
 ```bash
 git clone https://github.com/Joachimsyh/elanco-tick-tracker.git
+
+2. type npm start
+
+3. Have fun!
