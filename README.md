@@ -19,7 +19,7 @@ It includes interactive maps, species information, and a form to report sighting
 - Dynamic map interface displaying tick sightings across the UK. 
 - Markers with visual indicators for:
   - **Severity:** low=green, medium=yellow, high=red (logically assigned based on location type)  
-  - **Recency:** sightings <7 days → glowing outline; 7–30 days → thin outline; >30 days → no outline 
+  - **Recency:** sightings <2 years → white outline; 3-9 years → increasingly faded outline; 10-12 years → barely visible to no outline 
 
 ### 2. Sighting Information
 - Sidebar panel showing detailed sighting information when a user clicks a map marker, including:  
@@ -33,7 +33,7 @@ It includes interactive maps, species information, and a form to report sighting
 - Species identification guide showing:  
   - Species name  
   - Latin name  
-  - Small image/icon  
+  - Small image 
   - Prevention tips 
 
 ### 4. Report a Sighting
@@ -47,7 +47,7 @@ It includes interactive maps, species information, and a form to report sighting
 ## Technical Stack
 - **Frontend:** React, React Router DOM  
 - **Mapping:** Leaflet.js  
-- **Data:** Provided API (`https://dev-task.elancoapps.com/`) and `tick_data.json`  
+- **Data:** `tick_data.json`  
 - **Styling:** CSS Modules / standard CSS 
 
 ---
