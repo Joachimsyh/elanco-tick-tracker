@@ -55,6 +55,8 @@ It includes interactive maps, species information, and a form to report sighting
 ## CHALLENGES.md states the challenges I had to deal with while learning React and developing this project at the same time.
 
 ---
+## Walkthrough of the video:
+[Walkthrough](https://youtu.be/wOT3WumPDI8)
 
 ## How to Run the Project
 
