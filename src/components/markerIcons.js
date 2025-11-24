@@ -3,7 +3,15 @@ import redIcon from '../assets/red.png';
 import greenIcon from '../assets/green.png';
 import yellowIcon from '../assets/yellow.png';
 import whiteIcon from '../assets/white.png';
-
+/*
+  Define custom Leaflet marker icons.
+  These are created outside of any component to avoid re-creating them on each render.
+  Each icon has:
+    - iconUrl: path to image
+    - iconSize: width and height in pixels
+    - iconAnchor: point of the icon which will be at the marker’s LatLng (bottom center)
+    - popupAnchor: point relative to icon where popup appears
+*/
 // icons defined here, outside the component
 const redMarker = new L.Icon({
     iconUrl: redIcon,
@@ -31,31 +39,37 @@ const whiteMarker = new L.Icon({
     iconSize: [35, 35],
     iconAnchor: [17, 35],
 });
-
-
-function checkType(value) {
-    console.log("Value:", value, "Type:", typeof value);
-}
-function getOpacityForDate(dateString) {
+/*
+  calculateOpacity:
+  - Determines how transparent a marker should be based on its date.
+  - Newer sightings appear more visible, older ones fade.
+  - Returns a number between 0.12 (very old) and 1.0 (recent ≤1 year)
+*/
+const calculateOpacity = (dateString) => {
     if (!dateString || typeof dateString !== "string") {
-        // fallback opacity if date is missing or invalid
-        return 1;
+        return 0.6;
     }
-    const dateOnly = dateString.split("T")[0];
 
-    const markerDate = new Date(dateOnly);
+    const entryDate = new Date(dateString);  //convert string to Date
     const now = new Date();
 
-    const diffTime = Math.abs(now - markerDate);
-    const diffDays = diffTime / (1000 * 60 * 60 * 24);
-
-    if (diffDays <= 3) return 1.0;     // Very recent
-    if (diffDays <= 7) return 0.6;     // Recent
-    if (diffDays <= 14) return 0.3;    // Older
-    return 0.15;                   // Fading
+    const diffInMs = now - entryDate; // difference in milliseconds
+    const diffYears = diffInMs / (1000 * 60 * 60 * 24 * 365);// convert to years
+    // assign opacity based on how old the sighting is
+    if (diffYears <= 1) return 1.0;
+    if (diffYears <= 3) return 0.7;
+    if (diffYears <= 6) return 0.55;
+    if (diffYears <= 9) return 0.4;
+    if (diffYears <= 12) return 0.25;
+    return 0.12;
 }
 
-//assign the marker icons to severity levels
+/*
+  fusedIcons:
+  - Combines a colored severity marker with a semi-transparent white background.
+  - This helps indicate both severity and the age of the sighting in a single visual.
+  - Returns a Leaflet divIcon, which allows custom HTML inside markers.
+*/
 function fusedIcons(severity, dateString) {
     const marker = {
         high: redMarker,
@@ -64,22 +78,24 @@ function fusedIcons(severity, dateString) {
         backGround: whiteMarker
     };
     return L.divIcon({
-        className: 'combinedMarker',
+        className: 'combinedMarker', // CSS class for possible additional styling
         html: `<div style="position: relative; width: 35px; height: 35px;">
         <img src="${whiteMarker.options.iconUrl}" 
              style="position:absolute;
                     width:45px;height:45px;
                     top:0;left:0;
-                    opacity:${getOpacityForDate(dateString)}
+                    opacity:${calculateOpacity(dateString)};
                     pointer-events: none;" />
+
+        <!-- Foreground colored marker representing severity -->
 
         <img src="${marker[severity].options.iconUrl}" 
              style="position:absolute;
-                    width:30px;height:30px;
+                    width:25px;height:25px;
                     top:10px;left:10px;" />
     </div>`,
         iconSize: [35, 35],
-        iconAnchor: [17, 17],
+        iconAnchor: [17, 17], // Center of the combined icon
     })
 }
 export default fusedIcons;

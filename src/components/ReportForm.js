@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
+import { saveNewReport } from './reportStorage';
+import { cities, speciesOptions } from './ReportFormChoices';
+import { inputStyle, buttonStyle, messageStyles, formGroupStyle } from './FormStyles';
 
+// ReportForm component - allows users to submit tick sightings
+// Accepts onReportSubmitted callback to notify parent when a report is successfully submitted
 const ReportForm = ({ onReportSubmitted }) => {
+    // State to store form input values (date, time, location, species)
     const [formData, setFormData] = useState({
         date: '',
         time: '',
@@ -8,98 +14,114 @@ const ReportForm = ({ onReportSubmitted }) => {
         species: ''
     });
 
+    // State to store validation/success messages with type (error, warning, success)
     const [message, setMessage] = useState({ type: '', text: '' });
 
-    const speciesOptions = [
-        "Southern rodent-Tick",
-        "Marsh Tick (Sheep/Deer Tick)",
-        "Hedgehog Tick",
-        "Tree-hole Tick",
-        "Fox/Badger Tick",
-        "Unknown"
-    ];
-    const cities = [
-        { name: "London", lat: 51.5074, lng: -0.1278 },
-        { name: "Southampton", lat: 50.9097, lng: -1.4044 },
-        { name: "Cardiff", lat: 51.4816, lng: -3.1791 },
-        { name: "Bristol", lat: 51.4545, lng: -2.5879 },
-        { name: "Birmingham", lat: 52.4862, lng: -1.8904 },
-        { name: "Leicester", lat: 52.6369, lng: -1.1398 },
-        { name: "Nottingham", lat: 52.9548, lng: -1.1581 },
-        { name: "Sheffield", lat: 53.3811, lng: -1.4701 },
-        { name: "Manchester", lat: 53.4808, lng: -2.2426 },
-        { name: "Liverpool", lat: 53.4084, lng: -2.9916 },
-        { name: "Leeds", lat: 53.7997, lng: -1.5492 },
-        { name: "Newcastle", lat: 54.9783, lng: -1.6178 }
-    ];
-
+    // Handle input changes - updates formData state when user types/selects
+    // Also clears any existing error/success messages
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: value
         }));
-        // Clear message when user starts typing
+        // Clear message when user starts inputting again
         setMessage({ type: '', text: '' });
     };
 
+    // Validate form before submission
+    // Returns true if all fields are valid, false otherwise
     const validateForm = () => {
+        // Set a minimum date for validation
+        const minDate = new Date('2012-01-01');
+        // Warning for future dates - prevents accidental incorrect date entry
+        const selectedDate = new Date(formData.date);
+        const today = new Date();
         // Check for empty fields
         if (!formData.date) {
-            setMessage({ type: 'error', text: 'Please enter a date' });
+            setMessage({
+                type: 'error',
+                text: 'Please enter a date'
+            });
+            return false;
+        } else if (selectedDate < minDate) {
+            setMessage({
+                type: 'error',
+                text: 'Please enter a date after January 1, 2012'
+            });
             return false;
         }
         if (!formData.time) {
-            setMessage({ type: 'error', text: 'Please enter a time' });
+            setMessage({
+                type: 'error',
+                text: 'Please enter a time'
+            });
             return false;
         }
-        if (!formData.location.trim()) {
-            setMessage({ type: 'error', text: 'Please enter a location' });
+        if (!formData.location) {
+            setMessage({
+                type: 'error',
+                text: 'Please enter a location'
+            });
             return false;
         }
         if (!formData.species) {
-            setMessage({ type: 'error', text: 'Please select a species' });
+            setMessage({
+                type: 'error',
+                text: 'Please select a species'
+            });
             return false;
         }
-
-        // Warning for future dates
-        const selectedDate = new Date(formData.date);
-        const today = new Date();
         if (selectedDate > today) {
-            setMessage({ type: 'warning', text: 'Warning: Date is in the future. Are you sure?' });
+            setMessage({
+                type: 'warning',
+                text: 'Warning: Date is in the future. Are you sure?'
+            });
             return false;
         }
+        const reportDateTime = new Date(`${formData.date}T${formData.time}`);
+        const now = new Date();
 
+        if (reportDateTime > now) {
+            setMessage({
+                type: 'warning',
+                text: 'Warning: Date is in the future. Are you sure?'
+            });
+            return false;
+        }
         return true;
     };
 
+    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent default form submission/page reload
 
+        // Validate form before proceeding
         if (!validateForm()) {
             return;
         }
 
         try {
-            // Find lat/lng for the selected city
+            // Find the coordinates (lat/lng) for the selected city
             const selectedCity = cities.find(c => c.name === formData.location);
-            // Build the new report object
+
+            // Build the new report object with all data including coordinates
             const newReport = {
                 species: formData.species,
                 location: formData.location,
                 date: formData.date,
                 time: formData.time,
-                lat: selectedCity.lat,
+                lat: selectedCity.lat, // this is just for the selected cities in the list.
                 lng: selectedCity.lng
             };
 
-            // Save report in localStorage
+            // Save report to localStorage (acts as simple database)
             saveNewReport(newReport);
 
-            // Show success message
+            // Show success message to user
             setMessage({ type: 'success', text: 'Sighting reported successfully!' });
 
-            // Clear form
+            // Clear form fields after successful submission
             setFormData({
                 date: '',
                 time: '',
@@ -107,24 +129,22 @@ const ReportForm = ({ onReportSubmitted }) => {
                 species: ''
             });
 
+            // Notify parent component that a report was submitted (optional callback)
             if (onReportSubmitted) {
                 onReportSubmitted();
             }
         } catch (error) {
+            // Handle any errors during submission
             console.error('Error fetching coordinates:', error);
             setMessage({ type: 'error', text: 'Failed to fetch coordinates. Please try again.' });
         }
-    };
-    const messageStyles = {
-        error: { backgroundColor: '#ffcccc', color: '#cc0000', padding: '10px', borderRadius: '4px', marginBottom: '10px' },
-        warning: { backgroundColor: '#fff3cd', color: '#856404', padding: '10px', borderRadius: '4px', marginBottom: '10px' },
-        success: { backgroundColor: '#d4edda', color: '#155724', padding: '10px', borderRadius: '4px', marginBottom: '10px' }
     };
 
     return (
         <div className="report-form">
             <h2>Report a Tick Sighting</h2>
 
+            {/* Display validation/success message if one exists */}
             {message.text && (
                 <div style={messageStyles[message.type]}>
                     {message.text}
@@ -132,50 +152,61 @@ const ReportForm = ({ onReportSubmitted }) => {
             )}
 
             <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '15px' }}>
+                {/* Date input field */}
+                <div style={formGroupStyle}>
                     <label>Date:</label><br />
                     <input
                         type="date"
                         name="date"
                         value={formData.date}
                         onChange={handleChange}
-                        style={{ width: '100%', padding: '8px' }}
+                        style={inputStyle}
+                        min="2012-01-01"
                     />
                 </div>
 
-                <div style={{ marginBottom: '15px' }}>
+                {/* Time input field */}
+                <div style={formGroupStyle}>
                     <label>Time:</label><br />
                     <input
                         type="time"
                         name="time"
                         value={formData.time}
                         onChange={handleChange}
-                        style={{ width: '100%', padding: '8px' }}
+                        style={inputStyle}
                     />
                 </div>
 
-                <div style={{ marginBottom: '15px' }}>
+                {/* Location dropdown - shows list of UK cities */}
+                <div style={formGroupStyle}>
                     <label>Location:</label><br />
                     <select
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
-                        style={{ width: '100%', padding: '8px' }}
+                        style={inputStyle}
                     >
+                        {/* Default placeholder option - empty value so form validation catches if nothing is selected */}
                         <option value="">-- Select city --</option>
+
+                        {/* Loop through cities array and create an <option> for each city */}
                         {cities.map((city, i) => (
+                            // key={i} helps React track each option efficiently
+                            // value={city.name} is what gets stored in formData.location when selected
+                            // {city.name} is what the user sees in the dropdown
                             <option key={i} value={city.name}>{city.name}</option>
                         ))}
                     </select>
                 </div>
 
-                <div style={{ marginBottom: '15px' }}>
+                {/* Species dropdown - shows list of tick species */}
+                <div style={formGroupStyle}>
                     <label>Species:</label><br />
                     <select
                         name="species"
                         value={formData.species}
                         onChange={handleChange}
-                        style={{ width: '100%', padding: '8px' }}
+                        style={inputStyle}
                     >
                         <option value="">-- Select species --</option>
                         {speciesOptions.map((species, i) => (
@@ -184,28 +215,18 @@ const ReportForm = ({ onReportSubmitted }) => {
                     </select>
                 </div>
 
+                {/* Submit button */}
                 <button
                     type="submit"
-                    style={{
-                        backgroundColor: '#2c5530',
-                        color: 'white',
-                        padding: '10px 20px',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        width: '100%'
-                    }}
+                    style={buttonStyle}
                 >
                     Submit Report
                 </button>
-            </form>
-        </div>
+            </form >
+        </div >
     );
-    function saveNewReport(report) {
-        const saved = JSON.parse(localStorage.getItem("userReports") || "[]");
-        saved.push(report);
-        localStorage.setItem("userReports", JSON.stringify(saved));
-    }
+
 };
+
 
 export default ReportForm;

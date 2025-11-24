@@ -24,7 +24,7 @@ export const messageStyles = {
 };
 
 export const inputStyle = {
-    width: '100%',
+    width: '200px',
     padding: '8px'
 };
 

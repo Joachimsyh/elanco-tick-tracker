@@ -1,3 +1,6 @@
+//a script to read tick sighting data from a JSON file,
+//geocode the locations to get latitude and longitude using OpenStreetMap API,
+//and save the updated data with coordinates back to a new JSON file.
 //Import file system and node-fetch modules to read/write files and make API requests
 import fs from 'fs';
 import fetch from 'node-fetch';
@@ -6,7 +9,12 @@ import fetch from 'node-fetch';
 const rawData = fs.readFileSync('./src/data/tickData.json');
 const sightings = JSON.parse(rawData); //parse JSON data into JS objects
 
-//Define an sync function to add lat and long values to each location
+/* 
+  addLatLng Function:
+  - Loops through each sighting and fetches latitude & longitude from OpenStreetMap Nominatim API
+  - If API fails, assigns a default location
+  - Demonstrates async/await, fetch API, and updating objects in an array
+*/
 async function addLatLng() {
     for (let s of sightings) {
         //fetch geocode data from OpenStreetMap Nominatim API

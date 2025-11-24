@@ -1,5 +1,5 @@
 /* The main sidebar container */
-.sidebar {
+.right-sidebar {
     position: fixed;
     /* Stays fixed relative to the viewport */
     top: 0;
@@ -23,7 +23,7 @@
 }
 
 /* When the sidebar is open, slide it in */
-.sidebar.open {
+.right-sidebar.open {
     right: 0;
     /* Move it fully into view */
 }
@@ -44,6 +44,31 @@
     /* Make the '×' bigger */
     cursor: pointer;
     /* Change cursor to pointer on hover */
+}
+
+.left-sidebar {
+    position: absolute;
+    /* Stays at an absolute position on the viewport */
+    top: 0;
+    /* Stick to the top of the page */
+    left: 0;
+    /* Stable on the left side */
+    width: 350px;
+    /* Set the width of the sidebar */
+    height: 100%;
+    /* Full height of the viewport */
+    background: white;
+    /* White background */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    /* Shadow to make it pop */
+    padding: 20px;
+    /* Inner spacing */
+    z-index: 1000;
+    /* Ensure it appears above other elements, otherwise it won't be visible */
+    border-right: 1px solid #ccc;
+    /* Light border on the right side */
+    overflow-y: auto;
+    /* Enable vertical scrolling if content overflows */
 }
 
 /* Placeholder text when no sighting is selected */

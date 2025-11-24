@@ -4,8 +4,7 @@ const speciesOptions = [
     "Marsh Tick (Sheep/Deer Tick)",
     "Hedgehog Tick",
     "Tree-hole Tick",
-    "Fox/Badger Tick",
-    "Unknown"
+    "Fox/Badger Tick"
 ];
 
 // List of UK cities with their coordinates (latitude and longitude)
